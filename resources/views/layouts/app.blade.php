@@ -21,10 +21,13 @@
                 <a class="nav-link" href="{{ url('/') }}">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('/about') }}">About</a>
+                <a class="nav-link" href="{{ route('pets.get') }}">Get Pet By Id</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('/contact') }}">Contact</a>
+                <a class="nav-link" href="{{ route('pets.status') }}">Get Pet By Status</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('pets.add') }}">Add Pet</a>
             </li>
         </ul>
     </div>

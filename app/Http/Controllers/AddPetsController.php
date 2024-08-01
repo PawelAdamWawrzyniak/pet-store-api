@@ -8,6 +8,7 @@ use App\Models\Tag;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
+use Psr\Log\LoggerInterface;
 
 class AddPetsController extends Controller
 {
@@ -19,7 +20,7 @@ class AddPetsController extends Controller
         return view('pets.add_form', ['categories' => $categories, 'tags' => $tags]);
     }
 
-    public function store(PetStoreRequest $request): Response
+    public function store(PetStoreRequest $request, LoggerInterface $logger): Response
     {
         try {
             $validatedData = $request->validated();
@@ -47,9 +48,14 @@ class AddPetsController extends Controller
 
             $result = json_decode($response->body(), true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
+            $logger->log('error', 'Error while parsing json response . Error: ' . $e->getMessage());
             return new Response('Error while parsing json response', 400);
         }
 
-        return new Response('Pet ' . $result['id'] . ' added successfully', 200);
+        $petId = $result['id'];
+
+        $content = '<p>Pet ' . '<a href="'.route('pets.detail',['id'=> $petId]).'">' . $petId . '</a> added successfully</p>';
+
+        return new Response($content,200);
     }
 }

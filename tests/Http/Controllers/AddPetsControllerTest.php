@@ -57,13 +57,6 @@ class AddPetsControllerTest extends TestCase
     #[DataProvider('ApiErrorDataProvider')]
     public function testApiErrorResponse(array $data, int $apiResponseStatusCode): void
     {
-        $category = Category::factory()->create([
-            'id' => 1,
-        ]);
-        $tag = Tag::factory()->create([
-            'id' => 1,
-        ]);
-
         $this->mockApi($apiResponseStatusCode, 'no content');
 
         // When

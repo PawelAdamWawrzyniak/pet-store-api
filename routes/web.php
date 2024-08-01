@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddPetsController;
+use App\Http\Controllers\GetPetsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -9,3 +10,8 @@ Route::get('/', function () {
 
 Route::get('/add-pets', [AddPetsController::class , 'index'])->name('pets.add');
 Route::post('/store-pets', [AddPetsController::class , 'store'])->name('pets.store');
+
+Route::get('/get-pets', [GetPetsController::class, 'index'])->name('pets.get');
+Route::get('/get-pets-details', [GetPetsController::class, 'detail'])->name('pets.detail');
+Route::get('/get-pets-by-status', [GetPetsController::class, 'status'])->name('pets.status');
+Route::get('/get-pets-by-status-list', [GetPetsController::class, 'list'])->name('pets.status.list');
