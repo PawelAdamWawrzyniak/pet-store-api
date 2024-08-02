@@ -21,11 +21,7 @@ class GetPetsController extends Controller
 
     public function detail(PetGetRequest $request): Response
     {
-        try {
-            $pet = $this->SDKPetStoreAPI->getPet($request);
-        } catch (\RuntimeException) {
-            return new Response('Error while Api was requested', 400);
-        }
+        $pet = $this->SDKPetStoreAPI->getPet($request);
 
         return new Response(view('pets.detail', ['pet' => $pet]), 200);
     }
@@ -37,11 +33,7 @@ class GetPetsController extends Controller
 
     public function list(PetStatusRequest $request): Response
     {
-        try {
-            $pets = $this->SDKPetStoreAPI->list($request);
-        } catch (\RuntimeException) {
-            return new Response('Error while Api was requested', 400);
-        }
+        $pets = $this->SDKPetStoreAPI->list($request);
 
         return new Response(view('pets.list', ['pets' => $pets]), 200);
     }
