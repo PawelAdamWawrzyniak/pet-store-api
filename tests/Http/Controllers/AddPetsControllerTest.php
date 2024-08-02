@@ -18,18 +18,20 @@ class AddPetsControllerTest extends TestCase
         $category = Category::factory()->create();
         $tag = Tag::factory()->create();
         $data = [
+            'id' => 10,
             'name' => 'Test Pet',
             'status' => 'available',
             'tags_ids' => [$tag->id],
             'category_id' => $category->id,
         ];
+        $this->mockApi(200, json_encode($data));
 
         //When
         $response = $this->post(route('pets.store'), $data);
 
         //Then
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertStringContainsString('added successfully', $response->getContent());
+        $response->assertRedirect(route('pets.detail',['id' => 10]));
+        $response->assertSessionHas('message', 'Pet 10 added successfully');
     }
 
     public function testJsonErrorOccurs(): void
@@ -38,6 +40,7 @@ class AddPetsControllerTest extends TestCase
         $category = Category::factory()->create();
         $tag = Tag::factory()->create();
         $data = [
+            'id' => 10,
             'name' => 'Test Pet',
             'status' => 'available',
             'tags_ids' => [$tag->id],
@@ -50,21 +53,27 @@ class AddPetsControllerTest extends TestCase
         $response = $this->post(route('pets.store'), $data);
 
         // Then
-        $response->assertStatus(400);
-        $response->assertSee('Error while parsing json response');
+        $response->assertStatus(302);
+        $response->assertSessionHas('error', 'Undefined error occurs');
     }
 
     #[DataProvider('ApiErrorDataProvider')]
     public function testApiErrorResponse(array $data, int $apiResponseStatusCode): void
     {
+        Category::factory()->create([
+            'id' => 1,
+        ]);
+        Tag::factory()->create([
+            'id' => 1,
+        ]);
         $this->mockApi($apiResponseStatusCode, 'no content');
 
         // When
         $response = $this->post(route('pets.store'), $data);
 
         // Then
-        $response->assertStatus(400);
-        $response->assertSee('Error while Api was requested');
+        $response->assertStatus(302);
+        $response->assertSessionHas('error', 'Error while Api was requested');
     }
 
     public function mockApi(int $statusCode, string $responseText): void
@@ -78,6 +87,7 @@ class AddPetsControllerTest extends TestCase
     {
         yield 'api returns 400' => [
             'data' => [
+                'id' => 10,
                 'name' => 'Test Pet',
                 'status' => 'available',
                 'tags_ids' => [1],
@@ -87,6 +97,7 @@ class AddPetsControllerTest extends TestCase
         ];
         yield 'api returns 404' => [
             'data' => [
+                'id' => 10,
                 'name' => 'Test Pet',
                 'status' => 'available',
                 'tags_ids' => [1],
@@ -96,6 +107,7 @@ class AddPetsControllerTest extends TestCase
         ];
         yield 'api returns 500' => [
             'data' => [
+                'id' => 10,
                 'name' => 'Test Pet',
                 'status' => 'available',
                 'tags_ids' => [1],

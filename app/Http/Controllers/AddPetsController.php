@@ -6,8 +6,9 @@ use App\Http\Requests\PetStoreRequest;
 use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 use Psr\Log\LoggerInterface;
 
 class AddPetsController extends Controller
@@ -20,42 +21,33 @@ class AddPetsController extends Controller
         return view('pets.add_form', ['categories' => $categories, 'tags' => $tags]);
     }
 
-    public function store(PetStoreRequest $request, LoggerInterface $logger): Response
+    public function store(PetStoreRequest $request, LoggerInterface $logger): RedirectResponse
     {
         try {
-            $validatedData = $request->validated();
 
-            $response = Http::post('https://petstore.swagger.io/v2/pet', [
-                'id' => 0,
-                'category' => [
-                    'id' => $validatedData['category_id'],
-                    'name' => Category::find((int)$validatedData['category_id'])->name,
-                ],
-                'name' => $validatedData['name'],
-                'photoUrls' => [],
-                'tags' => array_map(function ($tagId) {
-                    return [
-                        'id' => $tagId,
-                        'name' => Tag::find((int)$tagId)->name,
-                    ];
-                }, $validatedData['tags_ids']),
-                'status' => $validatedData['status'],
-            ]);
+            $response = Http::post('https://petstore.swagger.io/v2/pet', $request->requestAllData());
 
             if ($response->status() !== 200) {
-                return new Response('Error while Api was requested', 400);
+                $logger->log('error', 'Error while Api was requested'. $response->body());
+                throw new \RuntimeException('Error while Api was requested');
             }
 
             $result = json_decode($response->body(), true, 512, JSON_THROW_ON_ERROR);
-        } catch (\JsonException $e) {
-            $logger->log('error', 'Error while parsing json response . Error: ' . $e->getMessage());
-            return new Response('Error while parsing json response', 400);
+        }
+        catch (\RuntimeException) {
+            Session::flash('error', 'Error while Api was requested');
+            return redirect()->back();
+        }
+        catch (\Exception $e) {
+            $logger->log('error', 'Undefined Error: ' . $e->getMessage());
+            Session::flash('error', 'Undefined error occurs');
+            return redirect()->back();
         }
 
         $petId = $result['id'];
 
-        $content = '<p>Pet ' . '<a href="'.route('pets.detail',['id'=> $petId]).'">' . $petId . '</a> added successfully</p>';
+        Session::flash('message', sprintf('Pet %s added successfully', $petId));
 
-        return new Response($content,200);
+        return redirect()->route('pets.detail', ['id' => $petId]);
     }
 }

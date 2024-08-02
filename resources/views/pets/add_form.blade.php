@@ -12,6 +12,12 @@
             </div>
         @endif
 
+        @session('error')
+        <div class="alert alert-danger">
+            {{ $value }}
+        </div>
+        @endsession
+
         <h1>Add New Pet</h1>
 
         <form action="{{ route('pets.store') }}" method="POST">
@@ -33,7 +39,8 @@
                 <div id="categories">
                     @foreach($tags as $tag)
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="tag{{ $tag->id }}" name="tags_ids[]" value="{{ $tag->id }}">
+                            <input type="checkbox" class="form-check-input" id="tag{{ $tag->id }}" name="tags_ids[]"
+                                   value="{{ $tag->id }}">
                             <label class="form-check-label" for="tag{{ $tag->id }}">{{ $tag->name }}</label>
                         </div>
                     @endforeach

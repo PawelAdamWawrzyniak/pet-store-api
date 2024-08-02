@@ -12,6 +12,12 @@
             </div>
         @endif
 
+        @session('message')
+        <div class="alert alert-info">
+            {{ $value }}
+        </div>
+        @endsession
+
         <h1>Pet Details</h1>
         <div class="card">
             <div class="card-body">

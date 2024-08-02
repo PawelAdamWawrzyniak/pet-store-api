@@ -29,6 +29,7 @@
                 <tbody>
                 @foreach($pets as $pet)
                     <tr>
+                        <td>{{ $pet['id'] ?? $noSetValue}}</td>
                         <td>{{ $pet['name'] ?? $noSetValue}}</td>
                         <td>{{ $pet['category']['name'] ?? $noSetValue}}</td>
                         <td>{{ $pet['status'] ?? $noSetValue}}</td>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PetStoreRequest extends FormRequest
@@ -42,11 +44,31 @@ class PetStoreRequest extends FormRequest
 
     public function getTagsIds(): array
     {
-        return $this->array('tags_ids');
+        return $this->input('tags_ids');
     }
 
     public function getCategoryId(): int
     {
         return $this->integer('category_id');
+    }
+
+    public function requestAllData(): array
+    {
+        return [
+                'id' => 0,
+                'category' => [
+                    'id' => $this->getCategoryId(),
+                    'name' => Category::find($this->getCategoryId())->name,
+                ],
+                'name' => $this->getName(),
+                'photoUrls' => [],
+                'tags' => array_map(function ($tagId) {
+                    return [
+                        'id' => $tagId,
+                        'name' => Tag::find((int)$tagId)->name,
+                    ];
+                }, $this->getTagsIds()),
+                'status' => $this->getStatus(),
+            ];
     }
 }
