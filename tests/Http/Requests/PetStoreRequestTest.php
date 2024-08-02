@@ -11,8 +11,6 @@ use Tests\TestCase;
 
 class PetStoreRequestTest extends TestCase
 {
-    use DatabaseTransactions;
-
     #[DataProvider('dataProviderForPetStoreRequestValidation')]
     public function testPetStoreRequestValidation(array $data, bool $expectedResult, array $expectedErrors = []): void
     {

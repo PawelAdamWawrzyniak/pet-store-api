@@ -9,8 +9,6 @@ use Tests\TestCase;
 
 class GetPetsControllerTest extends TestCase
 {
-    use DatabaseTransactions;
-
     public function testPetListShowed(): void
     {
         //Given

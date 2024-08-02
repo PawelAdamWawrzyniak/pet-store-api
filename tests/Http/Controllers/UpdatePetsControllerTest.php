@@ -9,8 +9,6 @@ use Tests\TestCase;
 
 class UpdatePetsControllerTest extends TestCase
 {
-    use DatabaseTransactions;
-
     public function testNewPetsIsAdded(): void
     {
         //Given
