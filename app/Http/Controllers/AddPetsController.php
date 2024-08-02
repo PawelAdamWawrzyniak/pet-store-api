@@ -15,10 +15,10 @@ class AddPetsController extends Controller
     public function index(): View
     {
 
-        return view('pets.add_form');
+        return view('pets.add.add_form');
     }
 
-    public function store(PetStoreRequest $request, SDKPetStoreAPI $SDKPetStoreAPI): RedirectResponse
+    public function add(PetStoreRequest $request, SDKPetStoreAPI $SDKPetStoreAPI): RedirectResponse
     {
         try {
             $petId = $SDKPetStoreAPI->addPet($request);
@@ -29,6 +29,6 @@ class AddPetsController extends Controller
 
         Session::flash('message', sprintf('Pet %s added successfully', $petId));
 
-        return redirect()->route('pets.detail', ['id' => $petId]);
+        return redirect()->route('pets.get.detail', ['id' => $petId]);
     }
 }

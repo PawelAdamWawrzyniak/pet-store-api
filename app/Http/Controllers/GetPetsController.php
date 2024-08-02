@@ -16,7 +16,7 @@ class GetPetsController extends Controller
 
     public function index(): View
     {
-        return view('pets.get_form');
+        return view('pets.get.get_form');
     }
 
     public function detail(PetGetRequest $request): Response
@@ -28,7 +28,7 @@ class GetPetsController extends Controller
 
     public function status(): View
     {
-        return view('pets.get_status_form');
+        return view('pets.get.get_status_form');
     }
 
     public function list(PetStatusRequest $request): Response

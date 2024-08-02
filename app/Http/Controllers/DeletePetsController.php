@@ -22,6 +22,6 @@ class DeletePetsController extends Controller
 
     public function form(): View
     {
-        return view('pets.delete_form_by_id');
+        return view('pets.delete.delete_form_by_id');
     }
 }

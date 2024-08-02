@@ -11,26 +11,22 @@ use Illuminate\View\View;
 
 class UpdatePetsController extends Controller
 {
-    public function view(SDKPetStoreAPI $SDKPetStoreAPI, PetGetRequest $request): View
+    public function index(SDKPetStoreAPI $SDKPetStoreAPI, PetGetRequest $request): View
     {
         $pet = $SDKPetStoreAPI->getPet($request);
 
-        return view('pets.update_form', ['pet' => $pet]);
+        return view('pets.update.update_form', ['pet' => $pet]);
     }
-    public function update(PetUpdateRequest $request,SDKPetStoreAPI $SDKPetStoreAPI): RedirectResponse
+
+    public function update(PetUpdateRequest $request, SDKPetStoreAPI $SDKPetStoreAPI): RedirectResponse
     {
-        try {
-            $pet = $SDKPetStoreAPI->updatePet($request);
-        } catch (\RuntimeException) {
-            Session::flash('error', 'Error while Api was requested');
-            return redirect()->back();
-        }
+        $pet = $SDKPetStoreAPI->updatePet($request);
 
         $petId = $pet['id'];
 
         Session::flash('message', sprintf('Pet %s updated successfully', $petId));
 
-        return redirect()->route('pets.detail', ['id' => $petId]);
+        return redirect()->route('pets.get.detail', ['id' => $petId]);
     }
 
     public function form(): View
