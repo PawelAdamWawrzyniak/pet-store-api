@@ -7,6 +7,7 @@ namespace App\Http\Services;
 use App\Contracts\Requests\AddPetInterface;
 use App\Contracts\Requests\FindByStatusPetInterface;
 use App\Contracts\Requests\GetPetInterface;
+use App\Contracts\Requests\UpdatePetInterface;
 use Illuminate\Support\Facades\Http;
 use Psr\Log\LoggerInterface;
 
@@ -67,5 +68,18 @@ readonly class SDKPetStoreAPI
             $this->logger->log('error', 'Error while parsing json response . Error: ' . $e->getMessage());
             throw new \RuntimeException('Error while parsing json response', 400);
         }
+    }
+
+    public function updatePet(UpdatePetInterface $request): array
+    {
+        try {
+            $response = Http::put('https://petstore.swagger.io/v2/pet', $request->requestAllData());
+            $result = $this->handleResponse($response);
+        } catch (\Exception $e) {
+            $this->logger->log('error', 'Undefined Error: ' . $e->getMessage());
+            throw new \RuntimeException('Undefined error occurs');
+        }
+
+        return $result;
     }
 }

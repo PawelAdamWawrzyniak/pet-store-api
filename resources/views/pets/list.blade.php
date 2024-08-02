@@ -20,10 +20,13 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Name</th>
                     <th>Category</th>
-                    <th>Status</th>
                     <th>Tags</th>
+                    <th>Status</th>
+                    <th>Photos</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,6 +42,20 @@
                                     <li>{{ $tag['name'] ?? $noSetValue}}</li>
                                 @endforeach
                             </ul>
+                        </td>
+                        <td>
+                            @if(!(empty($pet['photoUrls'])))
+                            <ul>
+                                @foreach($pet['photoUrls'] as $photo)
+                                    <li>{{ $photo ?? $noSetValue}}</li>
+                                @endforeach
+                            </ul>
+                            @else
+                            {{ $noSetValue }}
+                            @endif
+                        </td>
+                        <td>
+                            <a href="{{ route('pets.edit', [ 'id' => $pet['id']]) }}" class="btn btn-primary">Update</a>
                         </td>
                     </tr>
                 @endforeach
