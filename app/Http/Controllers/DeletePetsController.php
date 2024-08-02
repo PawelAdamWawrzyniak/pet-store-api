@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PetGetRequest;
-use App\Http\Requests\PetUpdateRequest;
-use App\Http\Services\SDKPetStoreAPI;
+use App\Services\SDKPetStoreAPI;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;

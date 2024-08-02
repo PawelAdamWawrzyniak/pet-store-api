@@ -40,11 +40,11 @@ class GetPetsControllerTest extends TestCase
 
         // Then
         $response->assertStatus(400);
-        $response->assertSee('Error while Api was requested');
+        $response->assertSee('Error while parsing json response');
     }
 
     #[DataProvider('ApiErrorDataProvider')]
-    public function testApiErrorResponse(array $data, int $apiResponseStatusCode): void
+    public function testApiErrorResponse(array $data, int $apiResponseStatusCode, int $expectedStatusCode): void
     {
         $this->mockApi($apiResponseStatusCode, 'no content', $data['id']);
 
@@ -52,8 +52,7 @@ class GetPetsControllerTest extends TestCase
         $response = $this->get(route('pets.detail', $data));
 
         // Then
-        $response->assertStatus(400);
-        $response->assertSee('Error while Api was requested');
+        $response->assertStatus($expectedStatusCode);
     }
 
     public function mockApi(int $statusCode, string $responseText, int $id): void
@@ -70,18 +69,21 @@ class GetPetsControllerTest extends TestCase
                 'id' => 1,
             ],
             'apiResponseStatusCode' => 400,
+            'expectedStatusCode' => 400,
         ];
         yield 'api returns 404' => [
             'data' => [
                 'id' => 1,
             ],
             'apiResponseStatusCode' => 404,
+            'expectedStatusCode' => 404,
         ];
         yield 'api returns 500' => [
             'data' => [
                 'id' => 1,
             ],
             'apiResponseStatusCode' => 500,
+            'expectedStatusCode' => 400,
         ];
     }
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PetGetRequest;
 use App\Http\Requests\PetStatusRequest;
-use App\Http\Services\SDKPetStoreAPI;
+use App\Services\SDKPetStoreAPI;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
@@ -23,7 +23,7 @@ class GetPetsController extends Controller
     {
         $pet = $this->SDKPetStoreAPI->getPet($request);
 
-        return new Response(view('pets.detail', ['pet' => $pet]), 200);
+        return new Response(view('pets.get.detail', ['pet' => $pet]), 200);
     }
 
     public function status(): View
@@ -35,6 +35,6 @@ class GetPetsController extends Controller
     {
         $pets = $this->SDKPetStoreAPI->list($request);
 
-        return new Response(view('pets.list', ['pets' => $pets]), 200);
+        return new Response(view('pets.get.list', ['pets' => $pets]), 200);
     }
 }

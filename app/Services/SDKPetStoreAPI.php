@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Services;
+namespace App\Services;
 
 use App\Contracts\Requests\AddPetInterface;
 use App\Contracts\Requests\FindByStatusPetInterface;
@@ -11,6 +11,7 @@ use App\Contracts\Requests\UpdatePetInterface;
 use App\Http\Requests\PetGetRequest;
 use Illuminate\Support\Facades\Http;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 readonly class SDKPetStoreAPI
@@ -26,13 +27,8 @@ readonly class SDKPetStoreAPI
      */
     public function addPet(AddPetInterface $request): int
     {
-        try {
-            $response = Http::post('https://petstore.swagger.io/v2/pet', $request->requestAllData());
-            $result = $this->handleResponse($response);
-        } catch (\Exception $e) {
-            $this->logger->log('error', 'Undefined Error: ' . $e->getMessage());
-            throw new \RuntimeException('Undefined error occurs');
-        }
+        $response = Http::post('https://petstore.swagger.io/v2/pet', $request->requestAllData());
+        $result = $this->handleResponse($response);
 
         return $result['id'];
     }
@@ -59,20 +55,28 @@ readonly class SDKPetStoreAPI
 
     private function handleResponse($response): array
     {
+        if ($response->status() === 400) {
+            throw new HttpException(400, 'Bad Request - Error while Api was requested',);
+        }
+
         if ($response->status() === 404) {
-            throw new NotFoundHttpException('Error 404 while Api was requested', null, 404);
+            throw new NotFoundHttpException('Resource Not Found - Error 404 while Api was requested', null, 404);
+        }
+
+        if ($response->status() === 405) {
+            throw new HttpException(405, 'Invalid Input in Request - Error while Api was requested',);
         }
 
         if ($response->status() !== 200) {
             $this->logger->log('error', 'Error while Api was requested' . $response->body());
-            throw new \RuntimeException('Error while Api was requested', 400);
+            throw new HttpException(400,'Error while Api was requested');
         }
 
         try {
             return json_decode($response->body(), true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             $this->logger->log('error', 'Error while parsing json response . Error: ' . $e->getMessage());
-            throw new \RuntimeException('Error while parsing json response', 400);
+            throw new HttpException(400, 'Error while parsing json response');
         }
     }
 

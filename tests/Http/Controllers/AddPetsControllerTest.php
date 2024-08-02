@@ -2,9 +2,6 @@
 
 namespace Tests\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Tag;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Http;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
@@ -33,7 +30,7 @@ class AddPetsControllerTest extends TestCase
         $response = $this->post(route('pets.store'), $data);
 
         //Then
-        $response->assertRedirect(route('pets.detail',['id' => 10]));
+        $response->assertRedirect(route('pets.detail', ['id' => 10]));
         $response->assertSessionHas('message', 'Pet 10 added successfully');
     }
 
@@ -60,12 +57,12 @@ class AddPetsControllerTest extends TestCase
         $response = $this->post(route('pets.store'), $data);
 
         // Then
-        $response->assertStatus(302);
-        $response->assertSessionHas('error', 'Error while Api was requested');
+        $response->assertStatus(400);
+        $response->assertSee('Error while parsing json response');
     }
 
     #[DataProvider('ApiErrorDataProvider')]
-    public function testApiErrorResponse(array $data, int $apiResponseStatusCode): void
+    public function testApiErrorResponse(array $data, int $apiResponseStatusCode, int $expectedStatusCode): void
     {
         $this->mockApi($apiResponseStatusCode, 'no content');
 
@@ -73,8 +70,7 @@ class AddPetsControllerTest extends TestCase
         $response = $this->post(route('pets.store'), $data);
 
         // Then
-        $response->assertStatus(302);
-        $response->assertSessionHas('error', 'Error while Api was requested');
+        $response->assertStatus($expectedStatusCode);
     }
 
     public function mockApi(int $statusCode, string $responseText): void
@@ -101,6 +97,7 @@ class AddPetsControllerTest extends TestCase
                 'photoUrls' => ['https://example.com/image.jpg'],
             ],
             'apiResponseStatusCode' => 400,
+            'expectedStatusCode' => 400,
         ];
         yield 'api returns 404' => [
             'data' => [
@@ -117,6 +114,7 @@ class AddPetsControllerTest extends TestCase
                 'photoUrls' => ['https://example.com/image.jpg'],
             ],
             'apiResponseStatusCode' => 404,
+            'expectedStatusCode' => 404,
         ];
         yield 'api returns 500' => [
             'data' => [
@@ -133,6 +131,7 @@ class AddPetsControllerTest extends TestCase
                 'photoUrls' => ['https://example.com/image.jpg'],
             ],
             'apiResponseStatusCode' => 500,
+            'expectedStatusCode' => 400,
         ];
     }
 }
