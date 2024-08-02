@@ -17,13 +17,22 @@
             {{ $value }}
         </div>
         @endsession
-
         <h1>Pet Details</h1>
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Name: {{ $pet['name'] }}</h5>
                 <p class="card-text">Category: {{ $pet['category']['name'] }}</p>
                 <p class="card-text">Status: {{ $pet['status'] }}</p>
+                @if(!empty($pet['photoUrls']))
+                <p class="card-text">Photos:</p>
+                <ul>
+                    @foreach($pet['photoUrls'] as $photo)
+                        <li><a href=" {{ $photo }}" target="_blank" > {{ $photo }}</a></li>
+                    @endforeach
+                </ul>
+                @else
+                    <p>No photos available</p>
+                @endif
                 <p class="card-text">Tags:</p>
                 <ul>
                     @foreach($pet['tags'] as $tag)

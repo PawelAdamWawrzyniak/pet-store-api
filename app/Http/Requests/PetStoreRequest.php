@@ -30,6 +30,8 @@ class PetStoreRequest extends FormRequest implements AddPetInterface
             'tags_ids' => ['required', 'array'],
             'tags_ids.*' => ['integer', 'exists:tags,id'],
             'status' => ['required', 'string', 'in:available,pending,sold'],
+            'photoUrls' => 'required|array',
+            'photoUrls.*' => 'required|url',
         ];
     }
 
@@ -62,7 +64,7 @@ class PetStoreRequest extends FormRequest implements AddPetInterface
                     'name' => Category::find($this->getCategoryId())->name,
                 ],
                 'name' => $this->getName(),
-                'photoUrls' => [],
+                'photoUrls' => $this->getPhotoUrls(),
                 'tags' => array_map(function ($tagId) {
                     return [
                         'id' => $tagId,
@@ -71,5 +73,10 @@ class PetStoreRequest extends FormRequest implements AddPetInterface
                 }, $this->getTagsIds()),
                 'status' => $this->getStatus(),
             ];
+    }
+
+    public function getPhotoUrls(): array
+    {
+        return $this->input('photoUrls');
     }
 }

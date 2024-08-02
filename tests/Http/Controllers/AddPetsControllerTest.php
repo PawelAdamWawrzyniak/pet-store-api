@@ -23,6 +23,7 @@ class AddPetsControllerTest extends TestCase
             'status' => 'available',
             'tags_ids' => [$tag->id],
             'category_id' => $category->id,
+            'photoUrls' => ['https://example.com/image.jpg'],
         ];
         $this->mockApi(200, json_encode($data));
 
@@ -45,6 +46,7 @@ class AddPetsControllerTest extends TestCase
             'status' => 'available',
             'tags_ids' => [$tag->id],
             'category_id' => $category->id,
+            'photoUrls' => ['https://example.com/image.jpg'],
         ];
 
         $this->mockApi(200, 'invalid json');
@@ -92,6 +94,7 @@ class AddPetsControllerTest extends TestCase
                 'status' => 'available',
                 'tags_ids' => [1],
                 'category_id' => 1,
+                'photoUrls' => ['https://example.com/image.jpg'],
             ],
             'apiResponseStatusCode' => 400,
         ];
@@ -102,6 +105,7 @@ class AddPetsControllerTest extends TestCase
                 'status' => 'available',
                 'tags_ids' => [1],
                 'category_id' => 1,
+                'photoUrls' => ['https://example.com/image.jpg'],
             ],
             'apiResponseStatusCode' => 404,
         ];
@@ -112,6 +116,7 @@ class AddPetsControllerTest extends TestCase
                 'status' => 'available',
                 'tags_ids' => [1],
                 'category_id' => 1,
+                'photoUrls' => ['https://example.com/image.jpg'],
             ],
             'apiResponseStatusCode' => 500,
         ];

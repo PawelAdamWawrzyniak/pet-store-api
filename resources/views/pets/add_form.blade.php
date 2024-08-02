@@ -54,7 +54,25 @@
                     <option value="sold">Sold</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="photoUrls">Photo URLs</label>
+                <div id="photoUrlsContainer">
+                    <input type="text" class="form-control mb-2" name="photoUrls[]" placeholder="Enter photo URL">
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="addPhotoUrlField()">Add another photo URL</button>
+            </div>
             <button type="submit" class="btn btn-primary">Add Pet</button>
         </form>
+            <script>
+                function addPhotoUrlField() {
+                    const photoUrlsContainer = document.getElementById('photoUrlsContainer');
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'form-control mb-2';
+                    input.name = 'photoUrls[]';
+                    input.placeholder = 'Enter photo URL';
+                    photoUrlsContainer.appendChild(input);
+                }
+            </script>
     @endsection
 </div>

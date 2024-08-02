@@ -39,6 +39,7 @@ class PetStoreRequestTest extends TestCase
                     'category_id' => 1,
                     'tags_ids' => [1, 2],
                     'status' => 'available',
+                    'photoUrls' => ['https://example.com/image.jpg'],
                 ],
                 'expectedResult' => true,
             ],
