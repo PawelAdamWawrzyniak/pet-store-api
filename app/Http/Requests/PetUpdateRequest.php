@@ -26,7 +26,7 @@ class PetUpdateRequest extends FormRequest implements UpdatePetInterface
             'name' => ['required', 'string', 'max:255'],
             'category' => ['required', 'string', 'max:255'],
             'tags_names' => ['array'],
-            'tags_names.*' => ['string'],
+            'tags_names.*.name' => ['string'],
             'status' => ['required', 'string', 'in:available,pending,sold'],
             'photoUrls' => 'array',
             'photoUrls.*' => 'url',
