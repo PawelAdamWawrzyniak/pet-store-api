@@ -40,7 +40,7 @@ class GetPetsControllerTest extends TestCase
 
         // Then
         $response->assertStatus(400);
-        $response->assertSee('Error while parsing json response');
+        $response->assertSee('Error while Api was requested');
     }
 
     #[DataProvider('ApiErrorDataProvider')]

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Contracts\AddPetInterface;
+use App\Contracts\Requests\AddPetInterface;
 use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Foundation\Http\FormRequest;

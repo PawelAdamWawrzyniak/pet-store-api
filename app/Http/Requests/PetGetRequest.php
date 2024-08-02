@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Contracts\Requests\GetPetInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PetGetRequest extends FormRequest
+class PetGetRequest extends FormRequest implements GetPetInterface
 {
     /**
      * Determine if the user is authorized to make this request.

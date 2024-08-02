@@ -18,6 +18,8 @@ class GetPetsControllerTest extends TestCase
             'id' => 1,
         ];
 
+        $this->mockApi(200, $this->getSampleResponse(), $data['id']);
+
         //When
         $response = $this->get(route('pets.detail', $data));
 
@@ -40,7 +42,7 @@ class GetPetsControllerTest extends TestCase
 
         // Then
         $response->assertStatus(400);
-        $response->assertSee('Error while parsing json response');
+        $response->assertSee('Error while Api was requested');
     }
 
     #[DataProvider('ApiErrorDataProvider')]
@@ -85,6 +87,25 @@ class GetPetsControllerTest extends TestCase
         ];
     }
 
-
-
+    private function getSampleResponse(): string
+    {
+        return '{
+                    "id": 1,
+                "category": {
+                        "id": 1,
+                    "name": "tak2"
+                },
+                "name": "Tak2",
+                "photoUrls": [
+                        "String"
+                    ],
+                "tags": [
+                    {
+                        "id": 1,
+                        "name": "Tak2"
+                    }
+                ],
+                "status": "Sold"
+            }';
+    }
 }
