@@ -8,6 +8,7 @@ use App\Contracts\Requests\AddPetInterface;
 use App\Contracts\Requests\FindByStatusPetInterface;
 use App\Contracts\Requests\GetPetInterface;
 use App\Contracts\Requests\UpdatePetInterface;
+use App\Http\Requests\PetGetRequest;
 use Illuminate\Support\Facades\Http;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -77,14 +78,15 @@ readonly class SDKPetStoreAPI
 
     public function updatePet(UpdatePetInterface $request): array
     {
-        try {
-            $response = Http::put('https://petstore.swagger.io/v2/pet', $request->requestAllData());
-            $result = $this->handleResponse($response);
-        } catch (\Exception $e) {
-            $this->logger->log('error', 'Undefined Error: ' . $e->getMessage());
-            throw new \RuntimeException('Undefined error occurs');
-        }
+        $response = Http::put('https://petstore.swagger.io/v2/pet', $request->requestAllData());
+        return $this->handleResponse($response);
+    }
 
-        return $result;
+    public function deletePet(PetGetRequest $request): int
+    {
+        $response = Http::delete('https://petstore.swagger.io/v2/pet/' . $request->getId());
+        $this->handleResponse($response);
+
+        return $request->getId();
     }
 }

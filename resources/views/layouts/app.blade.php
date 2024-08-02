@@ -32,6 +32,10 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('pets.edit.id') }}">Edit Pet By Id</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('pets.delete.id') }}">Delete Pet By Id</a>
+            </li>
+
         </ul>
     </div>
 </nav>
