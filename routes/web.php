@@ -18,4 +18,5 @@ Route::get('/get-pets-by-status', [GetPetsController::class, 'status'])->name('p
 Route::get('/get-pets-by-status-list', [GetPetsController::class, 'list'])->name('pets.status.list');
 
 Route::get('/update-pets-form', [UpdatePetsController::class, 'view'])->name('pets.edit');
+Route::get('/update-pets-form-by-id', [UpdatePetsController::class, 'form'])->name('pets.edit.id');
 Route::put('/update-pets', [UpdatePetsController::class, 'update'])->name('pets.update');

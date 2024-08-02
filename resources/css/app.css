@@ -1,0 +1,6 @@
+table td {
+    width: 100px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}

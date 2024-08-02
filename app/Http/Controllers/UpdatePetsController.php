@@ -32,4 +32,9 @@ class UpdatePetsController extends Controller
 
         return redirect()->route('pets.detail', ['id' => $petId]);
     }
+
+    public function form(): View
+    {
+        return view('pets.update_form_by_id');
+    }
 }

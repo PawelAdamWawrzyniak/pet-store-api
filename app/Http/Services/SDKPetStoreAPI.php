@@ -10,6 +10,7 @@ use App\Contracts\Requests\GetPetInterface;
 use App\Contracts\Requests\UpdatePetInterface;
 use Illuminate\Support\Facades\Http;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 readonly class SDKPetStoreAPI
 {
@@ -57,6 +58,10 @@ readonly class SDKPetStoreAPI
 
     private function handleResponse($response): array
     {
+        if ($response->status() === 404) {
+            throw new NotFoundHttpException('Error 404 while Api was requested', null, 404);
+        }
+
         if ($response->status() !== 200) {
             $this->logger->log('error', 'Error while Api was requested' . $response->body());
             throw new \RuntimeException('Error while Api was requested', 400);

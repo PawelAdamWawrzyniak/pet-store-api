@@ -7,7 +7,7 @@
     <!-- Bootstrap CSS CDN -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-{{--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -28,6 +28,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('pets.add') }}">Add Pet</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('pets.edit.id') }}">Edit Pet By Id</a>
             </li>
         </ul>
     </div>

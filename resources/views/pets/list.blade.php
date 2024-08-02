@@ -21,18 +21,22 @@
                 <thead>
                 <tr>
                     <th>Id</th>
+                    <th>Action</th>
                     <th>Name</th>
                     <th>Category</th>
                     <th>Tags</th>
                     <th>Status</th>
-                    <th>Photos</th>
-                    <th>Action</th>
+                    <th class="photo-column">Photos</th>
+
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($pets as $pet)
                     <tr>
                         <td>{{ $pet['id'] ?? $noSetValue}}</td>
+                        <td>
+                            <a href="{{ route('pets.edit', [ 'id' => $pet['id']]) }}" class="btn btn-primary">Update</a>
+                        </td>
                         <td>{{ $pet['name'] ?? $noSetValue}}</td>
                         <td>{{ $pet['category']['name'] ?? $noSetValue}}</td>
                         <td>{{ $pet['status'] ?? $noSetValue}}</td>
@@ -43,7 +47,7 @@
                                 @endforeach
                             </ul>
                         </td>
-                        <td>
+                        <td class="photo-column">
                             @if(!(empty($pet['photoUrls'])))
                             <ul>
                                 @foreach($pet['photoUrls'] as $photo)
@@ -54,9 +58,7 @@
                             {{ $noSetValue }}
                             @endif
                         </td>
-                        <td>
-                            <a href="{{ route('pets.edit', [ 'id' => $pet['id']]) }}" class="btn btn-primary">Update</a>
-                        </td>
+
                     </tr>
                 @endforeach
                 </tbody>
