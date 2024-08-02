@@ -27,24 +27,18 @@
                 <input type="text" id="name" name="name" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="category_id">Category:</label>
-                <select id="category_id" name="category_id" class="form-control" required>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                    @endforeach
-                </select>
+                <label for="category">Category</label>
+                <input type="text" class="form-control" id="category" name="category"
+                       value="" required>
             </div>
             <div class="form-group">
-                <label for="categories">Tags:</label>
-                <div id="categories">
-                    @foreach($tags as $tag)
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="tag{{ $tag->id }}" name="tags_ids[]"
-                                   value="{{ $tag->id }}">
-                            <label class="form-check-label" for="tag{{ $tag->id }}">{{ $tag->name }}</label>
-                        </div>
-                    @endforeach
+                <label for="tags_names">Tags</label>
+                <div id="tagsIdsContainer">
+                    <input type="text" class="form-control mb-2" name="tags_names[]" value=""
+                               placeholder="Enter tag name">
                 </div>
+                <button type="button" class="btn btn-secondary" onclick="addTagUrlField()">Add another Tag Name
+                </button>
             </div>
             <div class="form-group">
                 <label for="status">Status:</label>
@@ -72,6 +66,17 @@
                     input.name = 'photoUrls[]';
                     input.placeholder = 'Enter photo URL';
                     photoUrlsContainer.appendChild(input);
+                }
+            </script>
+            <script>
+                function addTagUrlField() {
+                    const container = document.getElementById('tagsIdsContainer');
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'form-control mb-2';
+                    input.name = 'tags_names[]';
+                    input.placeholder = 'Enter Tag Name';
+                    container.appendChild(input);
                 }
             </script>
     @endsection

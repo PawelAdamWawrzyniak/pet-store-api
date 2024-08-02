@@ -11,18 +11,20 @@ use Tests\TestCase;
 
 class AddPetsControllerTest extends TestCase
 {
-    use DatabaseTransactions;
     public function testNewPetsIsAdded(): void
     {
         //Given
-        $category = Category::factory()->create();
-        $tag = Tag::factory()->create();
         $data = [
             'id' => 10,
             'name' => 'Test Pet',
             'status' => 'available',
-            'tags_ids' => [$tag->id],
-            'category_id' => $category->id,
+            'tags_names' => [
+                [
+                    'id' => 0,
+                    'name' => 'Tag Name',
+                ]
+            ],
+            'category' => 'category',
             'photoUrls' => ['https://example.com/image.jpg'],
         ];
         $this->mockApi(200, json_encode($data));
@@ -38,14 +40,17 @@ class AddPetsControllerTest extends TestCase
     public function testJsonErrorOccurs(): void
     {
         // Given
-        $category = Category::factory()->create();
-        $tag = Tag::factory()->create();
         $data = [
             'id' => 10,
             'name' => 'Test Pet',
             'status' => 'available',
-            'tags_ids' => [$tag->id],
-            'category_id' => $category->id,
+            'tags_names' => [
+                [
+                    'id' => 0,
+                    'name' => 'Tag Name',
+                ]
+            ],
+            'category' => 'category',
             'photoUrls' => ['https://example.com/image.jpg'],
         ];
 
@@ -62,12 +67,6 @@ class AddPetsControllerTest extends TestCase
     #[DataProvider('ApiErrorDataProvider')]
     public function testApiErrorResponse(array $data, int $apiResponseStatusCode): void
     {
-        Category::factory()->create([
-            'id' => 1,
-        ]);
-        Tag::factory()->create([
-            'id' => 1,
-        ]);
         $this->mockApi($apiResponseStatusCode, 'no content');
 
         // When
@@ -92,8 +91,13 @@ class AddPetsControllerTest extends TestCase
                 'id' => 10,
                 'name' => 'Test Pet',
                 'status' => 'available',
-                'tags_ids' => [1],
-                'category_id' => 1,
+                'tags_names' => [
+                    [
+                        'id' => 0,
+                        'name' => 'Tag Name',
+                    ]
+                ],
+                'category' => 'category',
                 'photoUrls' => ['https://example.com/image.jpg'],
             ],
             'apiResponseStatusCode' => 400,
@@ -103,8 +107,13 @@ class AddPetsControllerTest extends TestCase
                 'id' => 10,
                 'name' => 'Test Pet',
                 'status' => 'available',
-                'tags_ids' => [1],
-                'category_id' => 1,
+                'tags_names' => [
+                    [
+                        'id' => 0,
+                        'name' => 'Tag Name',
+                    ]
+                ],
+                'category' => 'category',
                 'photoUrls' => ['https://example.com/image.jpg'],
             ],
             'apiResponseStatusCode' => 404,
@@ -114,8 +123,13 @@ class AddPetsControllerTest extends TestCase
                 'id' => 10,
                 'name' => 'Test Pet',
                 'status' => 'available',
-                'tags_ids' => [1],
-                'category_id' => 1,
+                'tags_names' => [
+                    [
+                        'id' => 0,
+                        'name' => 'Tag Name',
+                    ]
+                ],
+                'category' => 'category',
                 'photoUrls' => ['https://example.com/image.jpg'],
             ],
             'apiResponseStatusCode' => 500,

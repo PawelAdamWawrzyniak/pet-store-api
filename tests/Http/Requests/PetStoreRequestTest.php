@@ -3,8 +3,6 @@
 namespace Tests\Http\Requests;
 
 use App\Http\Requests\PetStoreRequest;
-use App\Models\Category;
-use App\Models\Tag;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Validator as ValidatorFacade;
 use Illuminate\Validation\Validator;
@@ -14,12 +12,11 @@ use Tests\TestCase;
 class PetStoreRequestTest extends TestCase
 {
     use DatabaseTransactions;
+
     #[DataProvider('dataProviderForPetStoreRequestValidation')]
     public function testPetStoreRequestValidation(array $data, bool $expectedResult, array $expectedErrors = []): void
     {
         // Given
-        $this->createCategory();
-        $this->createTags();
         $request = new PetStoreRequest();
 
         // When
@@ -36,8 +33,9 @@ class PetStoreRequestTest extends TestCase
             'valid data' => [
                 'data' => [
                     'name' => 'Pet Name',
-                    'category_id' => 1,
-                    'tags_ids' => [1, 2],
+                    'tags_names' => [
+                    ],
+                    'category' => 'category',
                     'status' => 'available',
                     'photoUrls' => ['https://example.com/image.jpg'],
                 ],
@@ -46,14 +44,20 @@ class PetStoreRequestTest extends TestCase
             'missing required fields' => [
                 'data' => [],
                 'expectedResult' => false,
-                'expectedErrors' => ['name', 'category_id', 'tags_ids', 'status'],
+                'expectedErrors' => ['name', 'category', 'status', 'photoUrls'],
             ],
             'invalid data name' => [
                 'data' => [
                     'name' => null,
-                    'category_id' => 'one',
-                    'tags_ids' => 'not an array',
-                    'status' => 'unknown',
+                    'tags_names' => [
+                        [
+                            'id' => 0,
+                            'name' => 'Tag Name',
+                        ]
+                    ],
+                    'category' => 'category',
+                    'status' => 'sold',
+                    'photoUrls' => ['https://example.com/image.jpg'],
                 ],
                 'expectedResult' => false,
                 'expectedErrors' => ['name'],
@@ -61,67 +65,70 @@ class PetStoreRequestTest extends TestCase
             'invalid category' => [
                 'data' => [
                     'name' => 'Pet Name',
-                    'category_id' => 2,
-                    'tags_ids' => [1, 2],
+                    'tags_names' => [
+                        [
+                            'id' => 0,
+                            'name' => 'Tag Name',
+                        ]
+                    ],
+                    'category' => 2,
                     'status' => 'available',
+                    'photoUrls' => ['https://example.com/image.jpg'],
                 ],
                 'expectedResult' => false,
-                'expectedErrors' => ['category_id'],
+                'expectedErrors' => ['category'],
             ],
-            'invalid tag_id' => [
+            'invalid tag_names' => [
                 'data' => [
                     'name' => 'Pet Name',
-                    'category_id' => 1,
-                    'tags_ids' => [3],
+                    'tags_names' => [
+                        [
+                            'id' => 0,
+                            'name' => 2,
+                        ]
+                    ],
+                    'category' => 'category',
                     'status' => 'available',
+                    'photoUrls' => ['https://example.com/image.jpg'],
                 ],
                 'expectedResult' => false,
-                'expectedErrors' => ['tags_ids.0'],
+                'expectedErrors' => ['tags_names.0.name'],
             ],
             'invalid data types' => [
                 'data' => [
                     'name' => 123,
-                    'category_id' => 'one',
-                    'tags_ids' => 'not an array',
+                    'tags_names' => [
+                        [
+                            'id' => 0,
+                            'name' => 'Tag Name',
+                        ]
+                    ],
+                    'category' => '',
                     'status' => 'unknown',
                 ],
                 'expectedResult' => false,
-                'expectedErrors' => ['name', 'category_id', 'tags_ids', 'status'],
+                'expectedErrors' => ['name', 'category', 'status', 'photoUrls'],
             ],
             'invalid status value' => [
                 'data' => [
                     'name' => 'Pet Name',
-                    'category_id' => 1,
-                    'tags_ids' => [1, 2],
+                    'tags_names' => [
+                        [
+                            'id' => 0,
+                            'name' => 'Tag Name',
+                        ]
+                    ],
+                    'category' => 'category',
                     'status' => 'invalid_status',
                 ],
                 'expectedResult' => false,
-                'expectedErrors' => ['status'],
+                'expectedErrors' => ['status', 'photoUrls'],
             ],
         ];
     }
 
     public function validateExpectedErrors(array $expectedErrors, Validator $validator): void
     {
-        foreach ($expectedErrors as $error) {
-            $this->assertArrayHasKey($error, $validator->errors()->toArray());
-        }
-    }
-
-    private function createCategory(): void
-    {
-        Category::factory()->create([
-            'id' => 1,
-        ]);
-    }
-
-    private function createTags(): void
-    {
-        Tag::factory()->create([
-            'id' => 1,
-        ]);
-        Tag::factory()->create([
-            'id' => 2,
-        ]);
+        $this->assertSame(array_keys($validator->errors()->toArray()), array_values($expectedErrors));
     }
 }

@@ -14,10 +14,8 @@ class AddPetsController extends Controller
 {
     public function index(): View
     {
-        $categories = Category::all();
-        $tags = Tag::all();
 
-        return view('pets.add_form', ['categories' => $categories, 'tags' => $tags]);
+        return view('pets.add_form');
     }
 
     public function store(PetStoreRequest $request, SDKPetStoreAPI $SDKPetStoreAPI): RedirectResponse

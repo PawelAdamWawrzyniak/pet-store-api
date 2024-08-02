@@ -11,9 +11,9 @@ interface AddPetInterface
 
     public function getStatus(): string;
 
-    public function getTagsIds(): array;
+    public function getTags(): array;
 
-    public function getCategoryId(): int;
+    public function getCategory(): string;
     public function getPhotoUrls(): array;
 
     public function requestAllData(): array;

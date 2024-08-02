@@ -26,9 +26,9 @@ class PetStoreRequest extends FormRequest implements AddPetInterface
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'category_id' => ['required', 'integer', 'exists:categories,id'],
-            'tags_ids' => ['required', 'array'],
-            'tags_ids.*' => ['integer', 'exists:tags,id'],
+            'category' => ['required', 'string', 'max:255'],
+            'tags_names' => ['array'],
+            'tags_names.*.name' => ['string', 'max:255'],
             'status' => ['required', 'string', 'in:available,pending,sold'],
             'photoUrls' => 'required|array',
             'photoUrls.*' => 'required|url',
@@ -45,14 +45,14 @@ class PetStoreRequest extends FormRequest implements AddPetInterface
         return $this->string('status');
     }
 
-    public function getTagsIds(): array
+    public function getTags(): array
     {
-        return $this->input('tags_ids');
+        return $this->input('tags_names');
     }
 
-    public function getCategoryId(): int
+    public function getCategory(): string
     {
-        return $this->integer('category_id');
+        return $this->string('category');
     }
 
     public function requestAllData(): array
@@ -60,17 +60,17 @@ class PetStoreRequest extends FormRequest implements AddPetInterface
         return [
                 'id' => 0,
                 'category' => [
-                    'id' => $this->getCategoryId(),
-                    'name' => Category::find($this->getCategoryId())->name,
+                    'id' => 0,
+                    'name' => $this->getCategory(),
                 ],
                 'name' => $this->getName(),
                 'photoUrls' => $this->getPhotoUrls(),
-                'tags' => array_map(function ($tagId) {
+                'tags' => array_map(static function ($tagName) {
                     return [
-                        'id' => $tagId,
-                        'name' => Tag::find((int)$tagId)->name,
+                        'id' => 0,
+                        'name' => $tagName,
                     ];
-                }, $this->getTagsIds()),
+                }, $this->getTags()),
                 'status' => $this->getStatus(),
             ];
     }
