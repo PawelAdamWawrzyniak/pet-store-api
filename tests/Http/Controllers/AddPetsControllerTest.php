@@ -54,7 +54,7 @@ class AddPetsControllerTest extends TestCase
 
         // Then
         $response->assertStatus(302);
-        $response->assertSessionHas('error', 'Undefined error occurs');
+        $response->assertSessionHas('error', 'Error while Api was requested');
     }
 
     #[DataProvider('ApiErrorDataProvider')]

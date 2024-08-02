@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Contracts\AddPetInterface;
 use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PetStoreRequest extends FormRequest
+class PetStoreRequest extends FormRequest implements AddPetInterface
 {
     /**
      * Determine if the user is authorized to make this request.
