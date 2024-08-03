@@ -25,6 +25,9 @@ I found out that the pet structure is like this:
 and I was surprised that I can create a pet without required data.
 But I guard this rules in request in my app.
 
+On the start of a project I thought that I should save categories and tags in the database.
+But when I implemented this solution I decided to remove it because it is not necessary.
+
 ## Exceptions
 
 I just use more generic approach and create blade templates (it not totally backend solution).
