@@ -86,7 +86,7 @@ readonly class SDKPetStoreAPI
         return $this->handleResponse($response);
     }
 
-    public function deletePet(PetGetRequest $request): int
+    public function deletePet(GetPetInterface $request): int
     {
         $response = Http::delete('https://petstore.swagger.io/v2/pet/' . $request->getId());
         $this->handleResponse($response);
