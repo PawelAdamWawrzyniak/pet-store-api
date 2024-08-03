@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Http\Controllers\Detail;
+namespace Tests\Integration\Http\Controllers\Detail;
 
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;

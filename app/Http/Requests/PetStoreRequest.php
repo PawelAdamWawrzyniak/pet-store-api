@@ -3,8 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Contracts\Requests\AddPetInterface;
-use App\Models\Category;
-use App\Models\Tag;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PetStoreRequest extends FormRequest implements AddPetInterface
@@ -78,5 +76,13 @@ class PetStoreRequest extends FormRequest implements AddPetInterface
     public function getPhotoUrls(): array
     {
         return $this->input('photoUrls');
+    }
+
+    public function messages()
+    {
+        return [
+            'photoUrls' => 'You need to provide at least one photo url',
+            'photoUrls.*' => 'Photo url must be a valid URL',
+        ];
     }
 }

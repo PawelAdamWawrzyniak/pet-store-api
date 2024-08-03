@@ -1,10 +1,9 @@
 <?php
 
-namespace Tests\Http\Requests;
+namespace Tests\Unit\Http\Requests;
 
 
 
-use App\Http\Requests\PetGetRequest;
 use App\Http\Requests\PetStatusRequest;
 use Illuminate\Support\Facades\Validator;
 use PHPUnit\Framework\Attributes\DataProvider;

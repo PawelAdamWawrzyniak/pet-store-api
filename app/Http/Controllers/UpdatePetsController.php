@@ -31,6 +31,6 @@ class UpdatePetsController extends Controller
 
     public function form(): View
     {
-        return view('pets.update_form_by_id');
+        return view('pets.update.update_form_by_id');
     }
 }

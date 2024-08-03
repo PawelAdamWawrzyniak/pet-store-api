@@ -1,14 +1,12 @@
 <?php
 
-namespace Tests\Services;
+namespace Tests\Unit\Services;
 
 
 use App\Contracts\Requests\AddPetInterface;
 use App\Contracts\Requests\GetPetInterface;
 use App\Contracts\Requests\UpdatePetInterface;
-use App\Http\Requests\PetStoreRequest;
 use App\Services\SDKPetStoreAPI;
-use Exception;
 use Illuminate\Support\Facades\Http;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;

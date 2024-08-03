@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Http\Controllers;
+namespace Tests\Integration\Http\Controllers;
 
 
 use Illuminate\Support\Facades\Http;

@@ -1,8 +1,7 @@
 <?php
 
-namespace Tests\Http\Controllers\FindByStatus;
+namespace Tests\Integration\Http\Controllers\FindByStatus;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Http;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
