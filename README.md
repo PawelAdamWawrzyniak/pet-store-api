@@ -1,3 +1,39 @@
+## How to run the project
+
+1. Clone the project from the repository
+2. Copy env `cp .env.example .env`
+5. Run `composer install`
+6. Run vendor/bin/sail up
+7. go to container with `docker compose exec laravel.test bash`
+8. generate key `php artisan key:generate`
+9. application is available on `localhost:80`
+
+## How to run the tests
+`php artisan test`
+
+# Additional information to the task
+
+I decided no use endpoint /pet/{petId}/uploadImage because I can not find where the photos are stored.
+After making the request to the endpoint there was no influence in 
+`[photoUrl]` structure, so edit pet via this endpoint has no sense.
+I found out that I can create pet with photoUr when I make a post request.
+
+I found out that the pet structure is like this:
+
+![pet structure](pet-structure.png)
+
+and I was surprised that I can create a pet without required data.
+But I guard this rules in request in my app.
+
+## Exceptions
+
+I just use more generic approach and create blade templates (it not totally backend solution).
+But I used HttpException to cover possible exceptions.
+I decided not to use custom exceptions and `render` and `raport` methods.
+And also not use `withExceptions` method in `app.php`.
+
+
+## Laravel README
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -51,7 +87,7 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+
 
 ## Code of Conduct
 
@@ -64,15 +100,3 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-## How to run the project
-
-1. Clone the project from the repository
-2. Copy env `cp .env.example .env`
-5. Run `composer install`
-6. Run vendor/bin/sail up
-7. go to container with `docker compose exec laravel.test bash`
-8. generate key `php artisan key:generate`
-9. create database `php artisan migrate`
-10. seed database `php artisan db:seed`
-

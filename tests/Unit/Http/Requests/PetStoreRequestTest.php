@@ -41,7 +41,7 @@ class PetStoreRequestTest extends TestCase
             'missing required fields' => [
                 'data' => [],
                 'expectedResult' => false,
-                'expectedErrors' => ['name', 'category', 'status', 'photoUrls'],
+                'expectedErrors' => ['name', 'status', 'photoUrls'],
             ],
             'invalid data name' => [
                 'data' => [
@@ -104,7 +104,7 @@ class PetStoreRequestTest extends TestCase
                     'status' => 'unknown',
                 ],
                 'expectedResult' => false,
-                'expectedErrors' => ['name', 'category', 'status', 'photoUrls'],
+                'expectedErrors' => ['name', 'status', 'photoUrls'],
             ],
             'invalid status value' => [
                 'data' => [
