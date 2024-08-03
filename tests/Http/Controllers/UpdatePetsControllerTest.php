@@ -3,7 +3,6 @@
 namespace Tests\Http\Controllers;
 
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
